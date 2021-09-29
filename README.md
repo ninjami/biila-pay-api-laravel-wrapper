@@ -21,7 +21,7 @@ Token that grants access to the API.
 ```php
 use BiilaPay\LaravelApiWrapper\Facades\BiilaPayApi;
 
-$reservations = BiilaPayApi::getPayment('7eb726a0-2c1f-4c4a-b736-6aa46732a6d7')->json();
+$payment = BiilaPayApi::getPayment('7eb726a0-2c1f-4c4a-b736-6aa46732a6d7')->json();
 // OR
-$reservations = BiilaPayApi::get('payment/7eb726a0-2c1f-4c4a-b736-6aa46732a6d7')->json();
+$payment = BiilaPayApi::get('payment/7eb726a0-2c1f-4c4a-b736-6aa46732a6d7')->json();
 ```
