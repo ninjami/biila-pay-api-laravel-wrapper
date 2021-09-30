@@ -14,13 +14,11 @@ class BiilaPayApiHttp extends PendingRequest
      * Undocumented function
      *
      * @param string|null $apiToken
-     * @param string|null $identity [optional]
      * @param string|null $domain [optional]
      * @param \Illuminate\Http\Client\Factory|null $factory
      */
     public function __construct(
         ?string $apiToken,
-        string $identity = null,
         string $domain = null,
         ?Factory $factory = null
     )
@@ -31,8 +29,7 @@ class BiilaPayApiHttp extends PendingRequest
 
         $this->baseUrl(rtrim($domain, '/') . '/v1')
             ->acceptJson()
-            ->withApiToken($apiToken)
-            ->attachHeaders($identity);
+            ->withApiToken($apiToken);
     }
 
     /**

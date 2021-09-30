@@ -24,7 +24,6 @@ class LaravelApiWrapperServiceProvider extends ServiceProvider
 
             return new BiilaPayApiHttp(
                 $config['api_token'], 
-                $config['identity'], 
                 $config['domain'], 
                 new Factory
             );
