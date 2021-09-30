@@ -49,4 +49,15 @@ trait PaymentEndpoints
     {
         return $this->post("payments/charge", $data);
     }
+
+    /**
+     * GET request for getting the perform url for a payment.
+     *
+     * @param string $paymentUuid
+     * @return \Illuminate\Http\Client\Response
+     */
+    public function getPerformUrl(string $paymentUuid): Response
+    {
+        return $this->get("payments/{$paymentUuid}/perform");
+    }
 }
