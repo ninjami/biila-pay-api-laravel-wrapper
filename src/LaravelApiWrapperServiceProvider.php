@@ -13,14 +13,8 @@ class LaravelApiWrapperServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->mergeConfigFrom(__DIR__ . '/../config/biila_pay_api.php', 'biila_pay_api');
-
-        $this->publishes([
-            __DIR__ . '/../config/biila_pay_api.php' => $this->app->configPath('biila_pay_api.php'),
-        ]);
-
         $this->app->bind(BiilaPayApiHttp::class, function () {
-            $config = $this->app['config']['biila_pay_api'];
+            $config = $this->app['config']->get('services.biila_pay_api');
 
             return new BiilaPayApiHttp(
                 $config['api_token'], 
