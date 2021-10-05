@@ -2,9 +2,9 @@
 
 namespace BiilaPay\LaravelApiWrapper;
 
+use BiilaPay\LaravelApiWrapper\Exceptions\InvalidClientCredentialsException;
 use Illuminate\Http\Client\Factory;
 use Illuminate\Http\Client\PendingRequest;
-use LogicException;
 
 class BiilaPayApiHttp extends PendingRequest
 {
@@ -18,7 +18,8 @@ class BiilaPayApiHttp extends PendingRequest
      * @param \Illuminate\Http\Client\Factory|null $factory
      */
     public function __construct(
-        ?string $apiToken,
+        ?string $clientId,
+        ?string $clientToken,
         string $domain = null,
         ?Factory $factory = null
     )
@@ -29,20 +30,27 @@ class BiilaPayApiHttp extends PendingRequest
 
         $this->baseUrl(rtrim($domain, '/') . '/v1')
             ->acceptJson()
-            ->withApiToken($apiToken);
+            ->withApiToken($clientId, $clientToken);
     }
 
     /**
      * Add api token to the request.
      *
-     * @param string|null $apiToken
+     * @param string|null $clientId
+     * @param string|null $clientToken
      * @return self
      */
-    protected function withApiToken(?string $apiToken): self
+    protected function withApiToken(?string $clientId, ?string $clientToken): self
     {
-        if (!$apiToken) {
-            throw new LogicException("Api token not set up in config for Biila Pay API.");
+        if (!$clientId) {
+            throw InvalidClientCredentialsException::idMissing();
         }
+
+        if (!$clientToken) {
+            throw InvalidClientCredentialsException::tokenMissing();
+        }
+        
+        $apiToken = "$clientId|$clientToken";
 
         return $this->withToken($apiToken);
     }

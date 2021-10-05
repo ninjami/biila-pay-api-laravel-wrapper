@@ -15,8 +15,9 @@ class LaravelApiWrapperServiceProvider extends ServiceProvider
     {
         $this->app->bind(BiilaPayApiHttp::class, function () {
             return new BiilaPayApiHttp(
-                $this->app['config']->get('services.biila_pay_api.api_token'),
-                $this->app['config']->get('services.biila_pay_api.domain'),
+                $this->app['config']->get('services.biila_pay.client_id'),
+                $this->app['config']->get('services.biila_pay.client_token'),
+                $this->app['config']->get('services.biila_pay.domain'),
                 new Factory
             );
         });
