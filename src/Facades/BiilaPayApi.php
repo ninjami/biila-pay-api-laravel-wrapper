@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Facade;
 
 /**
  * @method static \Illuminate\Http\Client\Response getPayment(string $uuid)
+ * @method static \Illuminate\Http\Client\Response createPayment(string $type, array $data)
  * @method static \Illuminate\Http\Client\Response createHoldPayment(array $data)
  * @method static \Illuminate\Http\Client\Response createFulfillPayment(array $data)
  * @method static \Illuminate\Http\Client\Response createChargePayment(array $data)

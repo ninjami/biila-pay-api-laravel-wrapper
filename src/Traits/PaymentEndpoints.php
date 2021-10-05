@@ -3,6 +3,7 @@
 namespace BiilaPay\LaravelApiWrapper\Traits;
 
 use Illuminate\Http\Client\Response;
+use RuntimeException;
 
 trait PaymentEndpoints
 {
@@ -18,6 +19,24 @@ trait PaymentEndpoints
     }
 
     /**
+     * POST request for creating a payment of given type.
+     *
+     * @param string $type
+     * @param array $data
+     * @return \Illuminate\Http\Client\Response
+     */
+    public function createPayment($type, array $data): Response
+    {
+        $types = ['hold', 'fulfill', 'charge'];
+        throw_if(
+            !in_array($type = strtolower($type), $types),
+            new RuntimeException(sprintf("Unsupported payment type '%s' given.", $type))
+        );
+
+        return $this->post("payments/{$type}", $data);
+    }
+
+    /**
      * POST request for storing a hold payment
      *
      * @param array $data
@@ -25,7 +44,7 @@ trait PaymentEndpoints
      */
     public function createHoldPayment(array $data): Response
     {
-        return $this->post("payments/hold", $data);
+        return $this->createPayment('HOLD', $data);
     }
 
     /**
@@ -36,7 +55,7 @@ trait PaymentEndpoints
      */
     public function createFulfillPayment(array $data): Response
     {
-        return $this->post("payments/fulfill", $data);
+        return $this->createPayment('FULFILL', $data);
     }
 
     /**
@@ -47,7 +66,7 @@ trait PaymentEndpoints
      */
     public function createChargePayment(array $data): Response
     {
-        return $this->post("payments/charge", $data);
+        return $this->createPayment('CHARGE', $data);
     }
 
     /**
