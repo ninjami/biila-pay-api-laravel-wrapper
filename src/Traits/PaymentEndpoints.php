@@ -27,11 +27,14 @@ trait PaymentEndpoints
      */
     public function createPayment($type, array $data): Response
     {
-        $types = ['hold', 'fulfill', 'charge'];
+        $types = ['hold', 'commit', 'fulfill', 'charge'];
         throw_if(
             !in_array($type = strtolower($type), $types),
             new RuntimeException(sprintf("Unsupported payment type '%s' given.", $type))
         );
+
+        // temporary conversion.
+        if ($type == 'fulfill') $type = 'commit';
 
         return $this->post("payments/{$type}", $data);
     }
@@ -48,14 +51,26 @@ trait PaymentEndpoints
     }
 
     /**
-     * POST request for storing a fulfill payment
+     * POST request for storing a commit payment
+     * @deprecated Will be removed.
      *
      * @param array $data
      * @return \Illuminate\Http\Client\Response
      */
     public function createFulfillPayment(array $data): Response
     {
-        return $this->createPayment('FULFILL', $data);
+        return $this->createPayment('COMMIT', $data);
+    }
+
+    /**
+     * POST request for storing a commit payment
+     *
+     * @param array $data
+     * @return \Illuminate\Http\Client\Response
+     */
+    public function createCommitPayment(array $data): Response
+    {
+        return $this->createPayment('COMMIT', $data);
     }
 
     /**
